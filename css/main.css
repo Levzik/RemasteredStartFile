@@ -1,0 +1,19 @@
+.productItem__img {
+  margin-top: 800px;
+border: 5px solid blue;}
+
+.productItem__subtitle {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+border: 5px solid blue;}
+
+.productItem__price {
+  margin-top: 100px;
+  border: 5px solid blue; }
+  .productItem__price-sale {
+    font-size: 100px;
+    color: red; }
+    .productItem__price-sale::after {
+      display: block; }

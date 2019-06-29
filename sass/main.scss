@@ -1,0 +1,27 @@
+@import '_mixins/_start';
+@import 'smart-grid.scss';
+
+.productItem
+{
+    &__img
+    {
+        margin-top: 300px;
+    }
+    &__subtitle
+    {
+        display: flex;
+    }
+
+    &__price
+    {
+        margin-top: 100px;
+        &-sale
+        {
+            font-size: 100px;
+            &::after
+            {
+                display: block;
+            }
+        }
+    }
+}

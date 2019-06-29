@@ -1,0 +1,36 @@
+doctype html
+html(lang="ru")
+	include _includes/_header
+	block variables
+		body
+			header.header#header
+				.container
+					.productItem
+						img(src="img/smells like teen spirit.png", alt="smells like teen spirit").productItem__img
+						.productItem__subtitle Милан премиум
+						.productItem__price.productItem__price-sale 15 000
+						.productItem__btn В корзину
+							a(href="#").productItem__link Клик!
+						//- Паттерн,который может повторяться из проекта в проект.
+			section
+				.container
+					form#formSum
+						label(for="numberOne") Число 1
+						input#numberOne(type="text",autofocus)
+
+
+						label(for="numberTwo") Число 2
+						input#numberTwo(type="text", autofocus)
+
+
+						input(type="submit", value="Сумма")
+						p
+							b Сумма:
+								span.sumResult#sumResult
+			section
+				.container
+
+			footer
+				.container
+
+			include _includes/_footer
