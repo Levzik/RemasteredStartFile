@@ -97,11 +97,7 @@ gulp.task('clean', function () {
 });
 
 
-//delete node_modules
-gulp.task('node', function () {
-    return gulp.src('node_modules/', {read: false})
-        .pipe(clean());
-});
+
 
 
 
