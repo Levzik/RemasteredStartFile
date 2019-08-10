@@ -1,17 +1,19 @@
 'use strict';
- 
-var gulp = require('gulp');  
+
+var gulp = require('gulp');
 var gulPug = require('gulp-pug');
 var sass = require('gulp-sass');
 var smartgrid = require('smart-grid');
 var autoprefixer = require('gulp-autoprefixer');
 var htmlmin = require('gulp-htmlmin');
 var uglify = require('gulp-uglify');
-var cleanCSS = require('gulp-clean-css');
+var gcmq = require('gulp-group-css-media-queries');
 var imagemin = require('gulp-imagemin');
 var clean = require('gulp-clean');
 var sftp = require('gulp-sftp');
-
+var uncss = require('gulp-uncss');
+var csso = require('gulp-csso');
+var browserSync = require('browser-sync');
 
 
 gulp.task('dist', [
@@ -34,7 +36,10 @@ gulp.task('ugli', function () {
 //Build dist css
 gulp.task('cleancss', function () {
     return gulp.src('css/*.css')
-        .pipe(cleanCSS())
+        .pipe(csso())
+        .pipe(uncss({
+                html: ['index.html']
+            }))
         .pipe(gulp.dest('dist/css'));
 });
 //Build html-min
@@ -64,11 +69,12 @@ gulp.task('sass', function () {
     .pipe(autoprefixer({
             browsers: ['last 10 versions'],
             cascade: false
-        }))  
+        }))
+    .pipe(gcmq())
     .pipe(gulp.dest('./css'));
 });
- 
- 
+
+
 
 
 //Подключение хтмл с декомпилятором
@@ -91,44 +97,71 @@ gulp.task('clean', function () {
 });
 
 
-
-//watcher для html/css
-
-gulp.task('watcher', function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
-   gulp.watch('pug/*.pug',['pug']);
-
+//delete node_modules
+gulp.task('node', function () {
+    return gulp.src('node_modules/', {read: false})
+        .pipe(clean());
 });
 
 
 
-//Build smartgrid
+
+
+
+
+
+
+// Static server
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        }
+    });
+});
+
+//watchers
+
+gulp.task('watch',['browser-sync'], function () {
+  gulp.watch('./sass/**/*.scss', ['sass']);
+   gulp.watch('pug/*.pug',['pug']);
+   browserSync.watch('sass/*.scss').on('change', browserSync.reload);
+   browserSync.watch('pug/*.pug').on('change', browserSync.reload);
+});
+
+gulp.task('watcher', function () {
+  gulp.watch('./sass/**/*.scss', ['sass']);
+   gulp.watch('pug/*.pug',['pug']);
+});
+
+
+
 
 /* It's principal settings in smart grid project */
 var settings = {
-    outputStyle: 'scss', /* less || scss || sass || styl */
+    outputStyle: 'less', /* less || scss || sass || styl */
     columns: 12, /* number of grid columns */
-    offset: '30px', /* gutter width px || % */
+    offset: '30px', /* gutter width px || % || rem */
     mobileFirst: false, /* mobileFirst ? 'min-width' : 'max-width' */
     container: {
         maxWidth: '1200px', /* max-width оn very large screen */
-        fields: '0' /* side fields */
+        fields: '30px' /* side fields */
     },
     breakPoints: {
         lg: {
             width: '1100px', /* -> @media (max-width: 1100px) */
-            fields: '20px'
         },
         md: {
             width: '960px'
         },
         sm: {
             width: '780px',
+            fields: '15px' /* set fields only if you want to change container.fields */
         },
         xs: {
             width: '560px'
         }
-        /* 
+        /*
         We can create any quantity of break points.
 
         some_name: {
@@ -140,7 +173,7 @@ var settings = {
     }
 };
 
-smartgrid('./sass', settings);
+smartgrid('./sass/', settings);
 
 
 
@@ -150,9 +183,9 @@ smartgrid('./sass', settings);
 gulp.task('sftp', function () {
     return gulp.src('dist/**/*')
         .pipe(sftp({
-            host: 'levzikMySite.tmweb.ru',
-            user: 'levzik',
+            host: 'MySite.ru',
+            user: 'levzik ',
             pass: '0000',
-            remotePath: 'Имя хоста'
+            remotePath: 'Путь хоста'
         }));
 });
