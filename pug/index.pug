@@ -1,25 +1,17 @@
 doctype html
 html(lang="ru")
-	include _mixins/_bootstrap
 	include _includes/_header
 	block variables
 		body
-			header.header#header
+			header
 				.container
-					.row.justify-content-between
-						.productItem__img
-							img(src="img/smells like teen spirit.png", alt="smells like teen spirit",width='150px', height='150px')
-						.productItem__img
-							img(src="img/smells like teen spirit.png", alt="smells like teen spirit",width='150px', height='150px')
-							//- Паттерн,который может повторяться из проекта в проект.
+
 			section
 				.container
-					.row
-						img.far(src="img/satisfectn.png", alt="satisfectn", width= '150px', height= '150px')
-						img.far(src="img/satisfectn.png", alt="satisfectn", width= '150px', height= '150px')
+
 			section
 				.container
-					+buttonX()
+
 			footer
 				.container
 

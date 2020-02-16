@@ -1,81 +1,58 @@
-@import '_mixins/_start';
-@import '_smart-grid.scss';
-@import '_mixins/_ellipsis.scss';
-@import '_media.scss';
-@include reset();///////////////////////////////////////////normalise
+@import "_smart-grid.scss";
+@import "_mixins/_custom.scss";
 
 
-div,p,input,form,button,span,a {
-    box-sizing: border-box;
+
+
+// default styles
+
+body {
+	background: #000000;
+  padding: 0;
+  margin: 0;
+
 }
+
+ul {
+  list-style: none;
+}
+li {
+	border: solid 0.5px #fff;
+}
+
+p,h1,h2,h3,h4,h5,h6{
+  color: #fff;
+
+}
+
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ a:hover{
+    text-decoration: none;
+}
+
+
+p,
+a,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Open Sans', sans-serif;
+
+}
+
 
 .container {
-    @include wrapper();////////////////////////normalize for container
-}
-.productItem
-{
-    &__img {
-        margin-top: 20px;
-        @include text-overflow();
-        @include col();
-        @include size(3);
-        @include size-md(6);
-        @include size-xs(12);
-    }
-    &__subtitle {
-        display: flex;
-    }
+  width: 1110px;
 
-    &__price {
-        margin-top: 100px;
-        margin-left: 100px;
-        margin-right: 20px;
-        &-sale {
-            font-size: 100px;
-            &::after {
-                display: block;
-            }
-        }
-    }
-}
-
-.justify-content-between{
-justify-content: space-between;
-}
-
-.row {
-@include row-flex();////normalize. В каждой строке, где используется smartgrid заворачивать в блок row
-
-
-   .far {
-        @include col();
-        @include size(3);
-        @include size-md(5);
-        @include size-xs(12);
-        &:last-child{
-
-        }
-
-}
 }
 
 
-h2 {
-    text-align: center;
-    @include md(background, #628);
-}
-h1 {
-    text-transform: uppercase;
-}
-h4 {
-    text-transform: uppercase;
-}
-h5 {
-    text-transform: uppercase;
-}
-h6 {
-    text-transform: uppercase;
-}
-h1 {
-    display: block;
-}
+// End default styles

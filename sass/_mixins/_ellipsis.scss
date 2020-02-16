@@ -1,7 +1,0 @@
-@mixin text-overflow(){
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-//для того, чтобы создавалось при длинном тексте троеточие исходя от разрешения.

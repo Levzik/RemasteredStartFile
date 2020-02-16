@@ -4,24 +4,37 @@ var gulp = require('gulp');
 var gulPug = require('gulp-pug');
 var sass = require('gulp-sass');
 var smartgrid = require('smart-grid');
-var autoprefixer = require('gulp-autoprefixer');
 var htmlmin = require('gulp-htmlmin');
 var uglify = require('gulp-uglify');
+var autoprefixer = require('gulp-autoprefixer');
 var gcmq = require('gulp-group-css-media-queries');
 var imagemin = require('gulp-imagemin');
 var clean = require('gulp-clean');
 var sftp = require('gulp-sftp');
 var uncss = require('gulp-uncss');
 var csso = require('gulp-csso');
-var browserSync = require('browser-sync');
 
 
-gulp.task('dist', [
+// Сборка конечного проекта
+
+gulp.task('dist', function() {
     'cleancss',
     'ugli',
     'img-min',
     'html-min'
-]);
+});
+
+
+
+
+//watch sass/pug
+gulp.task('watcher', function () {
+  gulp.watch('./sass/**/*.scss', gulp.series ('sass'));
+   gulp.watch('pug/*.pug', gulp.series ('pug'));
+});
+
+
+
 
 
 
@@ -42,7 +55,8 @@ gulp.task('cleancss', function () {
             }))
         .pipe(gulp.dest('dist/css'));
 });
-//Build html-min
+
+//Build dist html-min
 
 gulp.task('html-min', () => {
   return gulp.src('*.html')
@@ -50,8 +64,7 @@ gulp.task('html-min', () => {
     .pipe(gulp.dest('dist/'));
 });
 
-
-//Build img-min
+//Build dist img-min
 
 gulp.task('img-min', () =>
     gulp.src('img/*')
@@ -61,10 +74,16 @@ gulp.task('img-min', () =>
 
 
 
+
+
+
+
+
+
  //Build sass/autoprefixer
 
 gulp.task('sass', function () {
-  gulp.src('./sass/*.scss')
+    return gulp.src('./sass/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
             browsers: ['last 10 versions'],
@@ -74,10 +93,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./css'));
 });
 
-
-
-
-//Подключение хтмл с декомпилятором
+//pug
 
 gulp.task('pug', function() {
   return gulp.src("./pug/*.pug")
@@ -87,6 +103,11 @@ gulp.task('pug', function() {
       .pipe(gulp.dest("./"));
 
 });
+
+
+
+
+
 
 
 
@@ -105,37 +126,7 @@ gulp.task('node', function () {
 
 
 
-
-
-
-
-
-
-// Static server
-gulp.task('browser-sync', function() {
-    browserSync.init({
-        server: {
-            baseDir: "./"
-        }
-    });
-});
-
-//watchers
-
-gulp.task('watch',['browser-sync'], function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
-   gulp.watch('pug/*.pug',['pug']);
-   browserSync.watch('sass/*.scss').on('change', browserSync.reload);
-   browserSync.watch('pug/*.pug').on('change', browserSync.reload);
-});
-
-gulp.task('watcher', function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
-   gulp.watch('pug/*.pug',['pug']);
-});
-
-
-
+// Smart-grid
 
 /* It's principal settings in smart grid project */
 var settings = {
@@ -179,14 +170,13 @@ smartgrid('./sass/', settings);
 
 
 
-//host
+//host для заливки всех файлов в менеджер файлов хостинга
 gulp.task('sftp', function () {
     return gulp.src('dist/**/*')
         .pipe(sftp({
-            host: 'MySite.ru',
-            user: 'levzik ',
+            host: 'levazik.ru',
+            user: 'levazik ',
             pass: '0000',
             remotePath: 'Путь хоста'
         }));
 });
-//////////////////////////////////////// ты лох
